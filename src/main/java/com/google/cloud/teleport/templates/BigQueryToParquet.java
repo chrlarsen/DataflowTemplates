@@ -42,6 +42,56 @@ import org.apache.beam.sdk.options.ValueProvider;
 
 /**
  * Dataflow pipeline that exports data from a BigQuery table to Parquet files in GCS.
+ *
+ * Pipeline needs to be containerized before it can be used. The following steps will create a docker image
+ * that we can use to run the template. Steps are:
+ *    PROJECT=my-project
+ *    TARGET_GCR_IMAGE=gcr.io/${PROJECT}/bigquery-to-parquet
+ *    mvn clean package -Dimage=${TARGET_GCR_IMAGE}
+ *
+ * Next create a file in GCS that contains the path to the image. An example is:
+ *
+ * {
+ *    "docker_template_spec": {
+ *       "docker_image": "gcr.io/my-project/bigquery-to-parquet"
+ *     }
+ *  }
+ *
+ * Template can then be run with parameters as follows:
+ * <pre>
+ *    #! /bin/bash
+ *    set -x
+ *
+ *    echo "please to use glocud make sure you completed authentication"
+ *    echo "gcloud config set project templates-user"
+ *    echo "gcloud auth application-default login"
+ *
+ *    PROJECT_ID=${PROJECT}
+ *    API_ROOT_URL="https://dataflow.googleapis.com"
+ *    TEMPLATES_LAUNCH_API="${API_ROOT_URL}/v1b3/projects/${PROJECT_ID}/templates:launch"
+ *    JOB_NAME="bigquery-to-parquet-`date +%Y%m%d-%H%M%S-%N`"
+ *    echo JOB_NAME=$JOB_NAME
+ *
+ *
+ *    time curl -X POST -H "Content-Type: application/json"     \
+ *     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+ *     "${TEMPLATES_LAUNCH_API}"`
+ *     `"?validateOnly=false"`
+ *     `"&dynamicTemplate.gcsPath=gs://my-bucket/bigquery-to-parquet-template"`
+ *     `"&dynamicTemplate.stagingLocation=gs://my-bucket/staging" \
+ *     -d '
+ *      {
+ *       "jobName":"'$JOB_NAME'",
+ *       "parameters": {
+ *       "tableRef":"my-project:my-dataset.my-table",
+ *       "bucket":"gs://my-bucket",
+ *       "numShards":"5",
+ *       "fields":"field1,field2"
+ *    }
+ *   }
+ *  '
+ * </pre>
+ *
  */
 public class BigQueryToParquet {
 
