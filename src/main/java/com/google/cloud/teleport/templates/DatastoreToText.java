@@ -34,7 +34,7 @@ import org.apache.beam.sdk.options.PipelineOptionsFactory;
 public class DatastoreToText {
 
   /**
-   * The {@link DatastoreToTextOptions} class provides options for pipeline execution.
+   * Custom PipelineOptions
    */
   public interface DatastoreToTextOptions extends
       PipelineOptions,
