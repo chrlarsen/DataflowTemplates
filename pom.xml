@@ -405,13 +405,11 @@
       <artifactId>commons-codec</artifactId>
       <version>${commons-codec.version}</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.apache.avro/avro -->
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
       <version>${avro.version}</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.apache.beam/beam-sdks-java-io-parquet -->
     <dependency>
       <groupId>org.apache.beam</groupId>
       <artifactId>beam-sdks-java-io-parquet</artifactId>
@@ -555,7 +553,7 @@
             The Dataflow Template base image to use. This
              should not need to change unless we want to use the JDK11
              -->
-            <image>gcr.io/dataflow-templates-base/java8-template-launcher-base:latest</image>
+            <image>${base-container-image}:${base-container-image.version}</image>
           </from>
           <container>
             <!--
@@ -567,9 +565,9 @@
               - classes: Compiled pipeline code will be copied into this folder.
 
             The libs and classes folders under appRoot should thus be added in the classpath
-            defined in src/resources/java-command-spec.json.
+            defined in src/resources/command-spec.json.
             -->
-            <appRoot>/template/BigQueryToParquet</appRoot>
+            <appRoot>${app-root}</appRoot>
             <!--
             INHERIT the base containers entrypoint. Do not override or the Dataflow service
             will be unable to launch this template.
@@ -583,7 +581,7 @@
               environment variable can be set here.
               -->
               <DATAFLOW_JAVA_COMMAND_SPEC>
-                /template/BigQueryToParquet/resources/java-command-spec.json
+                ${command-spec}
               </DATAFLOW_JAVA_COMMAND_SPEC>
             </environment>
           </container>
@@ -701,7 +699,7 @@
           <configLocation>${project.basedir}/src/main/resources/checkstyle/checkstyle.xml</configLocation>
           <suppressionsLocation>${project.basedir}/src/main/resources/checkstyle/suppressions.xml</suppressionsLocation>
           <consoleOutput>true</consoleOutput>
-          <failOnViolation>false</failOnViolation>
+          <failOnViolation>true</failOnViolation>
           <includeResources>false</includeResources>
           <includeTestSourceDirectory>true</includeTestSourceDirectory>
         </configuration>

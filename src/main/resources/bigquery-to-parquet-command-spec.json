@@ -1,4 +1,4 @@
 {
-  "mainClass": "com.google.cloud.teleport.templates.BigQueryToParquet",
+  "mainClass": "com.google.cloud.teleport.templates.dynamic.BigQueryToParquet",
   "classPath": "/template/BigQueryToParquet/libs/*:/template/BigQueryToParquet/classes"
 }

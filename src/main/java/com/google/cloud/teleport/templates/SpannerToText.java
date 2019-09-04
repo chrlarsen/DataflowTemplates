@@ -64,6 +64,10 @@ public class SpannerToText {
 
   private static final Logger LOG = LoggerFactory.getLogger(SpannerToText.class);
 
+  /**
+   * The {@link SpannerToTextOptions} class provides the custom execution options passed by the executor at the
+   * command-line.
+   */
   public interface SpannerToTextOptions
       extends PipelineOptions,
           SpannerReadOptions,

@@ -34,6 +34,10 @@ import org.apache.beam.sdk.values.TupleTag;
  */
 public class BigQueryToDatastore {
 
+  /**
+   * The {@link BigQueryToDatastoreOptions} class provides the custom execution options passed by the executor at the
+   * command-line.
+   */
   public interface BigQueryToDatastoreOptions
       extends BigQueryReadOptions, DatastoreWriteOptions, ErrorWriteOptions {}
 
